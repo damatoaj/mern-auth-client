@@ -1,4 +1,8 @@
+import React from 'react';
+import axios from 'axios';
 import { useState } from 'react';
+import setAuthToken from '../../utils/setAuthToken';
+import { Redirect } from 'react-router-dom';
 
 const Signup = (props) => {
     const [name, setName] = useState('');
@@ -6,11 +10,26 @@ const Signup = (props) => {
     const [password, setPassword] = useState('');
 
     //todo add form password verification
+    const [redirect, setRedirect] = useState(false);
 
     const handleSubmit = e => {
         e.preventDefault();
-        console.log(`sending up new user data`, { name, email, password })
+       
+        axios.post(
+            `${process.env.REACT_APP_SERVER_URL}/api/signup`,
+            { name, email, password }
+            ).then(response => {
+                console.log(response.data);
+                //save the token in local storage
+                localStorage.setItem('jwtToken', response.data.token);
+                //set the token to auth header
+                setAuthToken(response.data.token);
+                //set user data
+                props.handleAuth(response.data.user);
+                setRedirect(true);
+            }).catch(err => console.log(`oh NOOOOOOOOOO`, err));
     }
+        if (redirect) return <Redirect to='/profile' />
 
     return (
         <section>
