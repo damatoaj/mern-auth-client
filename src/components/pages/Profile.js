@@ -12,7 +12,7 @@ const Profile = (props) => {
         })
         .catch(err => {
             console.log('😡 OH NO THERE IS AN ERROR', err)
-            setMessage(err.message);
+            props.handleAuth(null);
         })
     }, []);
 
