@@ -5,7 +5,7 @@ import Auth from './pages/Auth';
 import Profile from './pages/Profile';
 
 const PrivateRoute = ({ component: Component , ...rest }) => {
-    const token = localStorage.getItem('jwttoken');
+    const token = localStorage.getItem('jwtToken');
     return <Route {...rest} render={(renderProps) => (
         token ?
         <Component {...rest} {...renderProps} /> :
